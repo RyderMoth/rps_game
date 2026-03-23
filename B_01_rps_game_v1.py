@@ -1,7 +1,8 @@
+import random
+
 # Check that users have entered a valid
 # option based on a list
 def string_checker(question, valid_ans=('yes', 'no')):
-
     error = f"Please enter a valid option from the following list: {valid_ans}"
 
     while True:
@@ -22,6 +23,7 @@ def string_checker(question, valid_ans=('yes', 'no')):
         # print error if user does not enter something that is valid
         print(error)
         print()
+
 
 # Display instructions
 def instructions():
@@ -44,6 +46,7 @@ Press <xxx> to end the game at anytime.
 
 Good Luck! 
     ''')
+
 
 # checks for an integer more than 0 (allows <enter>)
 def int_check(question):
@@ -69,6 +72,29 @@ def int_check(question):
              print(error)
 
 
+# compares user / computer choice and returns
+# result (win / lose / tie)
+def rps_compare(user, comp):
+
+    # If the user and the computer choice is the same, it's a tie
+    if user == comp:
+        result = "tie"
+
+    # There are three ways to win
+    elif user == "paper" and comp == "rock":
+        result = "win"
+    elif user == "scissors" and comp == "paper":
+        result = "win"
+    elif user == "rock" and comp == "scissors":
+        result = "win"
+
+    # if it's not a win / tie, then it's a lost
+    else:
+        result = "lose"
+
+    return result
+
+
 # Main Routine Starts here
 
 # Intialise game variables
@@ -76,7 +102,6 @@ mode = "regular"
 rounds_played = 0
 
 rps_list = ["rock", "paper", "scissors", "xxx"]
-
 
 print("💎📰✂️ Rock / Paper/ Scissors Game ✂️📰💎")
 print()
@@ -100,29 +125,33 @@ if num_rounds =="infinite":
 while rounds_played < num_rounds:
 
     # Rounds heading
-
     if mode == "infinite":
         rounds_heading = f"\n♾️♾️♾️ Round {rounds_played + 1} (Infinite Mode️) ♾️♾️♾️"
     else:
         rounds_heading = f"\n💿💿💿 Round {rounds_played + 1} of {num_rounds} 💿💿💿"
 
     print(rounds_heading)
-    print()
+
+    # randomly choose from the rps list ( excluding the exit code)
+    comp_choice = random.choice(rps_list[:-1])
+    print("Computer choice", comp_choice)
 
     # get user choice
     user_choice = string_checker("Choose: ", rps_list)
-    print("you chose", user_choice)
+    # print("you chose", user_choice)
 
     # If user choice is the exit code, break the loop
     if user_choice == "xxx":
         break
+
+    result = rps_compare(user_choice, comp_choice)
+    print(f"{user_choice} vs {comp_choice}, {result}")
 
     rounds_played += 1
 
     # if users are in infinite mode, increase number of rounds!
     if mode == "infinite":
         num_rounds += 1
-
 
 # Game loop ends here
 
